@@ -156,7 +156,7 @@ def deep_q_learning(env, q_estimator, target_estimator, episodes, state_processo
 
             actions_prob = policy(state, epsilon)
             action = np.random.choice(np.arange(len(actions_prob)), p=actions_prob)
-            next_state, reward_, done, _ = env.step(action)
+            next_state, reward, done, _ = env.step(action)
             next_state = state_processor.process(K.get_session(), next_state)
             next_state = np.append(state[:, :, 1:], np.expand_dims(next_state, 2), axis=2)
             if len(replay_memory) == replay_memory_size:
@@ -193,3 +193,4 @@ if __name__ == "__main__":
     stats = deep_q_learning(env, q_estimator, target_estimator, 100, state_processor,
             experiment_dir)
     plotting.plot_episode_stats(stats)
+    env.close()
